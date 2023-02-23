@@ -63,7 +63,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> deleteProductById(@PathVariable Long id) {
         service.removeProductById(id);
         return new ResponseEntity<>("Successfully Delete Product!", HttpStatus.OK);
@@ -75,7 +75,7 @@ public class ProductController {
         return new ResponseEntity<>(service.upSertProduct(product), HttpStatus.OK);
     }
 
-    @GetMapping("/rsql")
+    @GetMapping("/search")
     public List<Product> findAllByRsql(@RequestParam(value = "query") String search) {
         Node rootNode = new RSQLParser().parse(search);
         Specification<Product> spec = rootNode.accept(new AppRsqlVisitor<>());

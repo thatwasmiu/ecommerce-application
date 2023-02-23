@@ -9,8 +9,11 @@ import com.application.ecommerce.jwt.JwtTokenUtil;
 import com.application.ecommerce.model.Role;
 import com.application.ecommerce.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,38 +21,52 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
+    private final RedisTemplate template;
     private final UserRepository userRepo;
     private final JwtTokenUtil jwtTokenUtil;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public String register(UserRegisterDto registerRequest) {
+    public String register(UserRegisterDto request) {
 
-        if (userRepo.findByUsername(registerRequest.getUsername()).isPresent())
+        if (userRepo.findByUsername(request.getUsername()).isPresent())
             throw new RuntimeException();
 
         User user = User.builder()
-                .firstname(registerRequest.getFirstname())
-                .lastname(registerRequest.getLastname())
-                .username(registerRequest.getUsername())
+                .firstname(request.getFirstname())
+                .lastname(request.getLastname())
+                .username(request.getUsername())
                 .role(Role.CUSTOMER)
-                .password(passwordEncoder.encode(registerRequest.getPassword()))
+                .password(passwordEncoder.encode(request.getPassword()))
                 .build();
 
         userRepo.save(user);
-        return jwtTokenUtil.generateToken(new AppUserDetails(user));
+        String jwt = jwtTokenUtil.generateToken(new AppUserDetails(user));
+        template.opsForValue().set(request.getUsername(), jwt);
+
+        return jwt;
     }
 
-    public String authenticate(UserLoginDto loginRequest) {
+    public String authenticate(UserLoginDto request) {
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
-                    loginRequest.getUsername(),
-                    loginRequest.getPassword()
+                    request.getUsername(),
+                    request.getPassword()
             )
         );
-        User user = userRepo.findByUsername(loginRequest.getUsername())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
-        return jwtTokenUtil.generateToken(new AppUserDetails(user));
 
+        User user = userRepo.findByUsername(request.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
+        String jwt = jwtTokenUtil.generateToken(new AppUserDetails(user));
+        template.opsForValue().set(request.getUsername(), jwt);
+
+        return jwt;
+    }
+
+    public void logout() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        System.out.println(username);
+        template.delete(username);
     }
 }

@@ -52,15 +52,15 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf()
-                .disable()
+                    .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/**", "/auth/**", "/graphiql/**")
-                .permitAll()
+                .requestMatchers("/login", "/register", "/graphiql", "/swagger-ui.html")
+                    .permitAll()
                 .anyRequest()
-                .authenticated()
+                    .authenticated()
                 .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

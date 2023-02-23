@@ -74,7 +74,7 @@ public class UserController {
         return new ResponseEntity<>("Successfully Delete User!", HttpStatus.OK);
     }
 
-    @GetMapping("/rsql")
+    @GetMapping("/search")
     public List<User> findAllByRsql(@RequestParam("search") String search) {
         Node rootNode = new RSQLParser().parse(search);
         Specification<User> spec = rootNode.accept(new AppRsqlVisitor<>());

@@ -5,6 +5,8 @@ import com.application.ecommerce.config.AppUserDetails;
 import com.application.ecommerce.model.User;
 import com.application.ecommerce.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -13,11 +15,13 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@CacheConfig(cacheNames={"users"})
 public class UserService implements UserDetailsService{
 
     UserRepository repo;
 
     @Override
+    @Cacheable
     public UserDetails loadUserByUsername(String username) {
         User user = repo.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
@@ -36,7 +40,6 @@ public class UserService implements UserDetailsService{
     public User upSertUser(User user) {
         return repo.save(user);
     }
-
 
     public void removeUserById(Long id) {
         repo.deleteById(id);

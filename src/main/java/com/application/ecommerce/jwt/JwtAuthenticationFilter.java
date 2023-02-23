@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +27,7 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private final RedisTemplate template;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserService customUserDetailsService;
 
@@ -36,7 +38,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NotNull FilterChain filterChain)
             throws ServletException, IOException {
         try {
-
             String jwt = getJwtFromRequest(request);
 
             if (StringUtils.hasText(jwt)) {
@@ -44,8 +45,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String username = jwtTokenUtil.getUsernameFromJWT(jwt);
 
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+                Object sessionValue = template.opsForValue().get(username);
+
                 if (
-                        userDetails != null
+                        sessionValue != null
+                        && sessionValue.equals(jwt)
+                        && userDetails != null
                         && SecurityContextHolder.getContext().getAuthentication() == null)
                 {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
@@ -57,15 +62,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
-
-                filterChain.doFilter(request, response);
-                return;
             }
         } catch (Exception ex) {
             log.error("failed on set user authentication", ex);
-            System.out.println("Test");
         }
-        throw new NoAuthenticationToken("No authentication token!");
+
+        filterChain.doFilter(request, response);
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {

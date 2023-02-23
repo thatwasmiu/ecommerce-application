@@ -6,18 +6,25 @@ import com.application.ecommerce.dto.user.UserRegisterDto;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.type.descriptor.java.ObjectJavaType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
 public class AuthenticationController {
 
     private final AuthenticationService service;
+
+    @GetMapping("/signout")
+    public ResponseEntity<Object> logoutUser() {
+        service.logout();
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping("/register")
     public ResponseEntity<Object> registerUser(
@@ -32,7 +39,7 @@ public class AuthenticationController {
 
         response.addCookie(cookie);
 
-        return ResponseEntity.ok(token);
+        return ResponseEntity.accepted().build();
     }
 
     @PostMapping("/login")
@@ -41,14 +48,14 @@ public class AuthenticationController {
                                     HttpServletResponse response
     ) {
         String token = service.authenticate(loginRequest);
+
         Cookie cookie = new Cookie("Token", token);
         cookie.setMaxAge(24*60*60);
 //        cookie.setSecure(true);    https protocol only, the connection need to be encrypted
+        cookie.setPath("/");
         cookie.setHttpOnly(true);
 
         response.addCookie(cookie);
-        return ResponseEntity.ok(token);
+        return ResponseEntity.accepted().build();
     }
-
-
 }

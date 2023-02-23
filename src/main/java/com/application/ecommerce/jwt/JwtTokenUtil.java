@@ -39,7 +39,7 @@ public class JwtTokenUtil {
         } catch (IllegalArgumentException ex) {
             log.error("JWT claims string is empty.");
         }
-        throw new RuntimeException(); // need custom exception
+        return null;
     }
 
 }

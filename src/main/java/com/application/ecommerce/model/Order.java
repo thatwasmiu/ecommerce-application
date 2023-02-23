@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Table(name = "product_order")
-public class Order extends AbstractEntity {
+public class  Order extends AbstractEntity {
 
         @ManyToOne
     private User owner;
