@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Objects;
 
 
-public abstract class CrudEndpoint<T extends AbstractEntity, ID, O extends RequestDTO> {
+public abstract class CrudRestEndpoint<T extends AbstractEntity, ID, O extends RequestDTO> {
 
     protected final CrudService<T, ID> service;
 
-    public CrudEndpoint(CrudService<T, ID> service) {
+    public CrudRestEndpoint(CrudService<T, ID> service) {
         this.service = service;
     }
 
@@ -36,7 +36,7 @@ public abstract class CrudEndpoint<T extends AbstractEntity, ID, O extends Reque
     @PostMapping
     public ResponseEntity<Objects> createObject(@RequestBody O dto) {
         T obj = this.createObjectFromDTO(dto);
-        service.create(obj);
+        service.upsert(obj);
         URI path = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(obj.getId())

@@ -1,7 +1,7 @@
 package com.application.ecommerce.controller;
 
 import com.application.ecommerce.dto.user.UserUpdateDTO;
-import com.application.ecommerce.model.User;
+import com.application.ecommerce.model.user.User;
 import com.application.ecommerce.repository.UserRepository;
 import com.application.ecommerce.service.UserService;
 import com.application.ecommerce.base.rsql.AppRsqlVisitor;
@@ -21,7 +21,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("api/v1/users")
 @AllArgsConstructor
 @PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {

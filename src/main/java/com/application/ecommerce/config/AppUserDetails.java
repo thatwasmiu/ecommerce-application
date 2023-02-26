@@ -1,6 +1,6 @@
 package com.application.ecommerce.config;
 
-import com.application.ecommerce.model.User;
+import com.application.ecommerce.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

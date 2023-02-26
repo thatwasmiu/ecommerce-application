@@ -1,6 +1,6 @@
 package com.application.ecommerce.controller;
 
-import com.application.ecommerce.model.Product;
+import com.application.ecommerce.model.product.Product;
 import com.application.ecommerce.repository.ProductRepository;
 import com.application.ecommerce.service.ProductService;
 import com.application.ecommerce.base.rsql.AppRsqlVisitor;
@@ -26,7 +26,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("api/v1/products")
 @AllArgsConstructor
 public class ProductController {
 

@@ -2,7 +2,7 @@ package com.application.ecommerce.service;
 
 import com.application.ecommerce.exception.ResourceNotFoundException;
 import com.application.ecommerce.config.AppUserDetails;
-import com.application.ecommerce.model.User;
+import com.application.ecommerce.model.user.User;
 import com.application.ecommerce.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;

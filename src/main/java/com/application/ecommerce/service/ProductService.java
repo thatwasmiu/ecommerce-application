@@ -1,7 +1,7 @@
 package com.application.ecommerce.service;
 
 import com.application.ecommerce.exception.ResourceNotFoundException;
-import com.application.ecommerce.model.Product;
+import com.application.ecommerce.model.product.Product;
 import com.application.ecommerce.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;

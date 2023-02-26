@@ -1,8 +1,8 @@
 package com.application.ecommerce.dto;
 
 import com.application.ecommerce.base.rest.RequestDTO;
-import com.application.ecommerce.model.Order;
-import com.application.ecommerce.model.ProductPurchase;
+import com.application.ecommerce.model.order.Order;
+import com.application.ecommerce.model.order.ProductPurchase;
 import lombok.Getter;
 import lombok.Setter;
 

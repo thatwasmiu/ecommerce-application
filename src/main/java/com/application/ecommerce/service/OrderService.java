@@ -1,8 +1,8 @@
 package com.application.ecommerce.service;
 
-import com.application.ecommerce.model.User;
+import com.application.ecommerce.model.user.User;
 import com.application.ecommerce.base.rest.CrudService;
-import com.application.ecommerce.model.Order;
+import com.application.ecommerce.model.order.Order;
 import com.application.ecommerce.repository.OrderRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;

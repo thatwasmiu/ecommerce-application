@@ -1,6 +1,6 @@
 package com.application.ecommerce.repository;
 
-import com.application.ecommerce.model.Product;
+import com.application.ecommerce.model.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

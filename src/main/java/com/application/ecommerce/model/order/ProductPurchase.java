@@ -1,6 +1,7 @@
-package com.application.ecommerce.model;
+package com.application.ecommerce.model.order;
 
 import com.application.ecommerce.base.rest.AbstractEntity;
+import com.application.ecommerce.model.product.Product;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import lombok.*;

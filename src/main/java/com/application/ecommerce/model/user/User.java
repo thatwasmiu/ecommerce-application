@@ -1,4 +1,4 @@
-package com.application.ecommerce.model;
+package com.application.ecommerce.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -16,8 +16,11 @@ import lombok.NoArgsConstructor;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
+
+    @ManyToOne
+    private User user;
 
     @Size(max = 15, message = "Me test firstname")
     private  String firstname;

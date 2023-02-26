@@ -2,7 +2,7 @@ package com.application.ecommerce.service;
 
 import com.application.ecommerce.repository.CategoryRepo;
 import com.application.ecommerce.base.rest.CrudService;
-import com.application.ecommerce.model.Category;
+import com.application.ecommerce.model.category.Category;
 import org.springframework.stereotype.Service;
 
 @Service

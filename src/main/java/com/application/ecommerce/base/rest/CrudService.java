@@ -6,11 +6,13 @@ import cz.jirutka.rsql.parser.RSQLParser;
 import cz.jirutka.rsql.parser.ast.Node;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 
 
+@Transactional
 public abstract class CrudService<T extends AbstractEntity, ID> {
     AuthenticationService authenticationService;
     protected final ResourceRepository<T, ID> repo;
@@ -27,7 +29,7 @@ public abstract class CrudService<T extends AbstractEntity, ID> {
         return repo.findAll();
     }
 
-    public T create(T obj) {
+    public T upsert(T obj) {
         this.doBeforeCreate(obj);
         T newObj = repo.save(obj);
         this.doAfterCreate(obj);

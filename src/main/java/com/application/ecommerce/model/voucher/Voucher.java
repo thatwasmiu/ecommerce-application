@@ -1,4 +1,4 @@
-package com.application.ecommerce.model;
+package com.application.ecommerce.model.voucher;
 
 import com.application.ecommerce.base.rest.AbstractEntity;
 import jakarta.persistence.Entity;
@@ -13,6 +13,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Voucher extends AbstractEntity {
+
+    private String name;
+
+    private String description;
 
     private Double discountPercent;
 

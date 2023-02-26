@@ -58,4 +58,9 @@ public class AuthenticationController {
         response.addCookie(cookie);
         return ResponseEntity.accepted().build();
     }
+
+    @GetMapping("/rando")
+    public String getRando() {
+        return "test rando";
+    }
 }

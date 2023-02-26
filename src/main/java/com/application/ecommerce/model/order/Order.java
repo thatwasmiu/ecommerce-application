@@ -1,6 +1,8 @@
-package com.application.ecommerce.model;
+package com.application.ecommerce.model.order;
 
 import com.application.ecommerce.base.rest.AbstractEntity;
+import com.application.ecommerce.model.user.User;
+import com.application.ecommerce.model.voucher.Voucher;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -17,7 +19,7 @@ import java.util.List;
 @Table(name = "product_order")
 public class  Order extends AbstractEntity {
 
-        @ManyToOne
+    @ManyToOne
     private User owner;
 
     @NotNull
@@ -25,6 +27,13 @@ public class  Order extends AbstractEntity {
 
     @OneToMany
     private List<ProductPurchase> productPurchases;
+
+    @OneToMany
+    private List<Voucher> vouchers;
+
+    private Double deliveryCost;
+
+    private Double totalPrice;
 
     @Column(columnDefinition = "varchar(10) default 'PENDING'")
     @Enumerated(value = EnumType.STRING)
