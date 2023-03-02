@@ -40,24 +40,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String jwt = getJwtFromRequest(request);
 
-            if (StringUtils.hasText(jwt)) {
-
+            if (StringUtils.hasText(jwt)) {     // If JWT isn't available -> continue the filter without doing anything
+                // get username detail from jwt and check user session stored in Redis
                 String username = jwtTokenUtil.getUsernameFromJWT(jwt);
-
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
                 Object sessionValue = template.opsForValue().get(username);
 
-                if (
+                if (    // If one of these above value is null -> continue the filter without doing anything
                         sessionValue != null
                         && sessionValue.equals(jwt)
                         && userDetails != null
                         && SecurityContextHolder.getContext().getAuthentication() == null)
                 {
+                    // Authenticate user
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails,
                             null,
                             userDetails.getAuthorities()
                     );
+                    // Set security context
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                     SecurityContextHolder.getContext().setAuthentication(authToken);
@@ -66,7 +67,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         } catch (Exception ex) {
             log.error("failed on set user authentication", ex);
         }
-
+        // continue filter chain either with or without the user being authenticated
         filterChain.doFilter(request, response);
     }
 

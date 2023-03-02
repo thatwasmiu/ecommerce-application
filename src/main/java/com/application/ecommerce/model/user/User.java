@@ -19,9 +19,6 @@ public class User {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
-    private User user;
-
     @Size(max = 15, message = "Me test firstname")
     private  String firstname;
 

@@ -21,18 +21,18 @@ public class UserService implements UserDetailsService{
     UserRepository repo;
 
     @Override
-    @Cacheable
     public UserDetails loadUserByUsername(String username) {
-        User user = repo.findByUsername(username)
+        User user = repo.findUserByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
         return new AppUserDetails(user);
     }
 
     public User getUserByUsername(String username) {
-        return repo.findByUsername(username)
+        return repo.findUserByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
     }
 
+    @Cacheable
     public List<User> getAllUser() {
         return repo.findAll();
     }

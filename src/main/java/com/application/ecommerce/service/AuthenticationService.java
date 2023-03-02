@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +25,14 @@ public class AuthenticationService {
     private final RedisTemplate template;
     private final UserRepository userRepo;
     private final JwtTokenUtil jwtTokenUtil;
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
     public String register(UserRegisterDto request) {
 
-        if (userRepo.findByUsername(request.getUsername()).isPresent())
-            throw new RuntimeException();
+        if (userRepo.existsUserByUsername(request.getUsername()))
+            throw new RuntimeException("Username already exists");
 
         User user = User.builder()
                 .firstname(request.getFirstname())
@@ -48,16 +50,17 @@ public class AuthenticationService {
     }
 
     public String authenticate(UserLoginDto request) {
-        authenticationManager.authenticate(
+        // If user is valid user DaoAthProvider to set the principle to instance of UserDetails else throwing exception
+
+        Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                     request.getUsername(),
                     request.getPassword()
             )
         );
 
-        User user = userRepo.findByUsername(request.getUsername())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
-        String jwt = jwtTokenUtil.generateToken(new AppUserDetails(user));
+        UserDetails user = (UserDetails) authentication.getPrincipal();
+        String jwt = jwtTokenUtil.generateToken(user);
         template.opsForValue().set(request.getUsername(), jwt);
 
         return jwt;
@@ -66,7 +69,6 @@ public class AuthenticationService {
     public void logout() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        System.out.println(username);
         template.delete(username);
     }
 }

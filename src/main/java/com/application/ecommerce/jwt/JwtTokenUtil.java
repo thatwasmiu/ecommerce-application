@@ -3,6 +3,7 @@ package com.application.ecommerce.jwt;
 import com.application.ecommerce.config.AppUserDetails;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -12,11 +13,11 @@ import java.util.Date;
 @Slf4j
 public class JwtTokenUtil {
 
-    public String generateToken(AppUserDetails userDetails) {
+    public String generateToken(UserDetails userDetails) {
         Date expiredDate = new Date(System.currentTimeMillis() + JwtTokenConfig.JWT_EXPR);
 
         return Jwts.builder()
-                .setSubject(userDetails.getUser().getUsername())
+                .setSubject(userDetails.getUsername())
                 .setExpiration(expiredDate)
                 .signWith(JwtTokenConfig.getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();

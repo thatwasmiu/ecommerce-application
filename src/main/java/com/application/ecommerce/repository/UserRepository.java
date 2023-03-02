@@ -6,6 +6,10 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
-    public Optional<User> findByUsername(String username);
+public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User>{
+    Optional<User> findUserByUsername(String username);
+
+    boolean existsUserByUsername(String username);
+
+    Optional<User> findByUsernameEquals(String username);
 }

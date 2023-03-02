@@ -19,7 +19,7 @@ public class CachingConfig {
 
     @Bean
     public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager("products", "orders", "users");
+        return new ConcurrentMapCacheManager("products", "orders");
     }
 
     @Bean

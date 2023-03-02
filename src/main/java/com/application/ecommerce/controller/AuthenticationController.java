@@ -23,7 +23,7 @@ public class AuthenticationController {
     @GetMapping("/signout")
     public ResponseEntity<Object> logoutUser() {
         service.logout();
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>("Logout from the system!", HttpStatus.OK);
     }
 
     @PostMapping("/register")
@@ -39,7 +39,7 @@ public class AuthenticationController {
 
         response.addCookie(cookie);
 
-        return ResponseEntity.accepted().build();
+        return new ResponseEntity<>(token, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
@@ -56,7 +56,7 @@ public class AuthenticationController {
         cookie.setHttpOnly(true);
 
         response.addCookie(cookie);
-        return ResponseEntity.accepted().build();
+        return new ResponseEntity<>(token, HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/rando")

@@ -19,7 +19,7 @@ import java.util.List;
 @Table(name = "product_order")
 public class  Order extends AbstractEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User owner;
 
     @NotNull
