@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -51,7 +52,7 @@ public class ProductController {
     }
 
     @PostMapping
-//    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product) {
         Product newProduct = service.upSertProduct(product);
 
@@ -63,7 +64,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-//    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> deleteProductById(@PathVariable Long id) {
         service.removeProductById(id);
         return new ResponseEntity<>("Successfully Delete Product!", HttpStatus.OK);
@@ -81,5 +82,10 @@ public class ProductController {
         Specification<Product> spec = rootNode.accept(new AppRsqlVisitor<>());
         return dao.findAll(spec);
     }
+
+//    @PostMapping("/excel")
+//    public ResponseEntity<Object> inputExcelFile(MultipartFile multipartFile) {
+//
+//    }
 
 }

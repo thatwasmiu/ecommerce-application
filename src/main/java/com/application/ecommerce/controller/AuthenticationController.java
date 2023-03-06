@@ -1,5 +1,6 @@
 package com.application.ecommerce.controller;
 
+import com.application.ecommerce.jwt.JwtToken;
 import com.application.ecommerce.service.AuthenticationService;
 import com.application.ecommerce.dto.user.UserLoginDto;
 import com.application.ecommerce.dto.user.UserRegisterDto;
@@ -27,13 +28,15 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> registerUser(
+    public ResponseEntity<JwtToken> registerUser(
                                     @RequestBody UserRegisterDto registerRequest,
                                     HttpServletResponse response
     ) {
-        String token = service.register(registerRequest);
-        Cookie cookie = new Cookie("Token", token);
-        cookie.setMaxAge(24*60*60);
+        JwtToken token = service.register(registerRequest);
+
+
+        Cookie cookie = new Cookie("Token", token.getToken());
+        cookie.setMaxAge(token.getExprDate().intValue());
 //        cookie.setSecure(true);    https protocol only, the connection need to be encrypted
         cookie.setHttpOnly(true);
 
@@ -43,14 +46,14 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> authenticateUser(
+    public ResponseEntity<JwtToken> authenticateUser(
                                     @RequestBody UserLoginDto loginRequest,
                                     HttpServletResponse response
     ) {
-        String token = service.authenticate(loginRequest);
+        JwtToken token = service.authenticate(loginRequest);
 
-        Cookie cookie = new Cookie("Token", token);
-        cookie.setMaxAge(24*60*60);
+        Cookie cookie = new Cookie("Token", token.getToken());
+        cookie.setMaxAge(token.getExprDate().intValue());
 //        cookie.setSecure(true);    https protocol only, the connection need to be encrypted
         cookie.setPath("/");
         cookie.setHttpOnly(true);
@@ -59,8 +62,4 @@ public class AuthenticationController {
         return new ResponseEntity<>(token, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/rando")
-    public String getRando() {
-        return "test rando";
-    }
 }

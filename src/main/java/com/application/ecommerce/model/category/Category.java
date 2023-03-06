@@ -5,16 +5,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Category extends AbstractEntity{
-
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
 
     @Enumerated(value = EnumType.STRING)
     private CategoryType type;

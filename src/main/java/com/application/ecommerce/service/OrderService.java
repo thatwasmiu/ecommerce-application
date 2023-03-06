@@ -1,24 +1,28 @@
 package com.application.ecommerce.service;
 
+import com.application.ecommerce.config.AppUserDetails;
 import com.application.ecommerce.model.user.User;
 import com.application.ecommerce.base.rest.CrudService;
 import com.application.ecommerce.model.order.Order;
 import com.application.ecommerce.repository.OrderRepository;
+import com.application.ecommerce.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class OrderService extends CrudService<Order, Long> {
 
-    UserService userService;
+    UserRepository userRepo;
 
     public OrderService(
             OrderRepository repo,
             AuthenticationService authenticationService,
-            UserService userService
+            UserRepository userRepo
     ) {
         super(repo, authenticationService);
-        this.userService = userService;
+        this.userRepo = userRepo;
     }
 
     @Override
@@ -28,14 +32,11 @@ public class OrderService extends CrudService<Order, Long> {
 
     @Override
     protected void doBeforeCreate(Order obj) {
-        User user = userService.getUserByUsername(
-                SecurityContextHolder
+        AppUserDetails user = (AppUserDetails) SecurityContextHolder
                         .getContext()
-                        .getAuthentication()
-                        .getName()
-        );
+                        .getAuthentication().getPrincipal();
 
-        obj.setOwner(user);
+        obj.setOwner(user.getUser());
     }
 
     @Override
@@ -59,5 +60,13 @@ public class OrderService extends CrudService<Order, Long> {
         StringBuilder sb = new StringBuilder();
 //        sb.append("")
         return query;
+    }
+
+    public List<Order> getOrderByOwner() {
+        AppUserDetails userDetails = (AppUserDetails) SecurityContextHolder
+                .getContext()
+                .getAuthentication().getPrincipal();
+        User user = userDetails.getUser();
+        return ((OrderRepository) repo).findByOwner(user);
     }
 }

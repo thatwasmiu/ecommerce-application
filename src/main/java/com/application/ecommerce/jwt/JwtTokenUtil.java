@@ -1,6 +1,7 @@
 package com.application.ecommerce.jwt;
 
 import com.application.ecommerce.config.AppUserDetails;
+import com.application.ecommerce.model.user.User;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,14 +14,26 @@ import java.util.Date;
 @Slf4j
 public class JwtTokenUtil {
 
-    public String generateToken(UserDetails userDetails) {
+    public JwtToken generateToken(UserDetails userDetails) {
+        return generate(userDetails.getUsername());
+    }
+
+    public JwtToken generateToken(User user) {
+        return generate(user.getUsername());
+    }
+
+    private JwtToken generate(String username) {
         Date expiredDate = new Date(System.currentTimeMillis() + JwtTokenConfig.JWT_EXPR);
 
-        return Jwts.builder()
-                .setSubject(userDetails.getUsername())
+        String jwt = Jwts.builder()
+                .setSubject(username)
                 .setExpiration(expiredDate)
                 .signWith(JwtTokenConfig.getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
+        return JwtToken.builder()
+                .token(jwt)
+                .exprDate(expiredDate.getTime())
+                .build();
     }
 
     public String getUsernameFromJWT(String token) {
