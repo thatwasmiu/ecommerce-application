@@ -62,4 +62,8 @@ public class AuthenticationController {
         return new ResponseEntity<>(token, HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("/rando")
+    public String getrando() {
+        return "Rando";
+    }
 }

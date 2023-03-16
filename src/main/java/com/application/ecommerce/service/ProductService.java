@@ -3,7 +3,10 @@ package com.application.ecommerce.service;
 import com.application.ecommerce.exception.ResourceNotFoundException;
 import com.application.ecommerce.model.product.Product;
 import com.application.ecommerce.repository.ProductRepository;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Filter;
+import org.hibernate.Session;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -20,6 +23,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class ProductService {
 
     private final ProductRepository repo;
+    private final EntityManager entityManager;
 
     @Cacheable
     public List<Product> getAllProduct() {
@@ -44,4 +48,17 @@ public class ProductService {
         repo.deleteById(id);
     }
 
+    public List<Product> findRecords(boolean isDeleted) {
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("deletedProductFilter");
+        filter.setParameter("isDeleted", isDeleted);
+        List<Product> products = repo.findAll();
+        session.disableFilter("deletedProductFilter");
+
+        return products;
+    }
+
+    public void truncateProductTable() {
+        repo.truncateTable();
+    }
 }

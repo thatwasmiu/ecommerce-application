@@ -13,11 +13,17 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 
 @EnableWebSecurity
@@ -29,8 +35,9 @@ public class WebSecurityConfig {
     private final UserService userService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    private static String[] WHITELIST = {
-            "/login", "/register", "/graphiql", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/rando"
+    private static final String[] WHITELIST = {
+            "/login", "/register", "/graphiql", "/swagger-ui.html",
+            "/swagger-ui/**", "/v3/api-docs/**", "/api/v1/products/**"
     };
 
 
@@ -56,10 +63,14 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors()
+                    .disable()
                 .csrf()
                     .disable()
                 .authorizeHttpRequests()
                 .requestMatchers(WHITELIST)
+                    .permitAll()
+                .requestMatchers("api/v1/products/")
                     .permitAll()
                 .anyRequest()
                     .authenticated()
@@ -75,8 +86,6 @@ public class WebSecurityConfig {
 
 //    @Bean
 //    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return web -> {
-//          web.ignoring().requestMatchers(WHITELIST);
-//        };
+//        return web -> web.ignoring().requestMatchers(WHITELIST);
 //    }
 }

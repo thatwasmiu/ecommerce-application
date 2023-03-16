@@ -25,7 +25,7 @@ public class  Order extends AbstractEntity {
     @NotNull
     private LocalDate purchaseDate;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ProductPurchase> productPurchases;
 
     @OneToMany
