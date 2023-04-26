@@ -1,5 +1,6 @@
 package com.application.ecommerce.controller;
 
+import com.application.ecommerce.dto.AuthenticationResponse;
 import com.application.ecommerce.jwt.JwtToken;
 import com.application.ecommerce.service.AuthenticationService;
 import com.application.ecommerce.dto.user.UserLoginDto;
@@ -17,9 +18,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class AuthenticationController {
 
     private final AuthenticationService service;
+
 
     @GetMapping("/signout")
     public ResponseEntity<Object> logoutUser() {
@@ -28,38 +31,38 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<JwtToken> registerUser(
+    public ResponseEntity<AuthenticationResponse> registerUser(
                                     @RequestBody UserRegisterDto registerRequest,
                                     HttpServletResponse response
     ) {
-        JwtToken token = service.register(registerRequest);
+        AuthenticationResponse authenticationResponse = service.register(registerRequest);
+//        JwtToken token = authenticationResponse.getToken();
+//
+//        Cookie cookie = new Cookie("Token", token.getToken());
+//        cookie.setMaxAge(token.getExprDate().intValue());
+////        cookie.setSecure(true);    https protocol only, the connection need to be encrypted
+//        cookie.setHttpOnly(true);
+//
+//        response.addCookie(cookie);
 
-
-        Cookie cookie = new Cookie("Token", token.getToken());
-        cookie.setMaxAge(token.getExprDate().intValue());
-//        cookie.setSecure(true);    https protocol only, the connection need to be encrypted
-        cookie.setHttpOnly(true);
-
-        response.addCookie(cookie);
-
-        return new ResponseEntity<>(token, HttpStatus.CREATED);
+        return new ResponseEntity<>(authenticationResponse, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JwtToken> authenticateUser(
+    public ResponseEntity<AuthenticationResponse> authenticateUser(
                                     @RequestBody UserLoginDto loginRequest,
                                     HttpServletResponse response
     ) {
-        JwtToken token = service.authenticate(loginRequest);
-
-        Cookie cookie = new Cookie("Token", token.getToken());
-        cookie.setMaxAge(token.getExprDate().intValue());
-//        cookie.setSecure(true);    https protocol only, the connection need to be encrypted
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-
-        response.addCookie(cookie);
-        return new ResponseEntity<>(token, HttpStatus.ACCEPTED);
+        AuthenticationResponse authenticationResponse = service.authenticate(loginRequest);
+//        JwtToken token = authenticationResponse.getToken();
+//
+//        Cookie cookie = new Cookie("Token", token.getToken());
+//        cookie.setMaxAge(token.getExprDate().intValue());
+////        cookie.setSecure(true);    https protocol only, the connection need to be encrypted
+//        cookie.setPath("/");
+//        cookie.setHttpOnly(true);
+//        response.addCookie(cookie);
+        return new ResponseEntity<>(authenticationResponse, HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/rando")

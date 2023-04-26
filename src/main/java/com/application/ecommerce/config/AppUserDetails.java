@@ -3,6 +3,7 @@ package com.application.ecommerce.config;
 import com.application.ecommerce.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Data
+@NoArgsConstructor
 public class AppUserDetails implements UserDetails {
     User user;
 
@@ -48,5 +50,9 @@ public class AppUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

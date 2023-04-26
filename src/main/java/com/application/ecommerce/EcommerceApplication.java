@@ -28,67 +28,67 @@ public class EcommerceApplication {
         SpringApplication.run(EcommerceApplication.class, args);
     }
 
-    @Bean
-    ApplicationRunner applicationRunner(ProductRepository repo, CategoryRepo categoryRepo) {
-        return args -> {
-            Category category1 = categoryRepo.save(
-                    Category.builder()
-                            .type(CategoryType.BOOK)
-                            .build()
-            );
-            Category category2 = categoryRepo.save(
-                    Category.builder()
-                            .type(CategoryType.BENCH)
-                            .build()
-            );
-            Category category3 = categoryRepo.save(
-                    Category.builder()
-                            .type(CategoryType.BAG)
-                            .build()
-            );
-            Category category4 = categoryRepo.save(
-                    Category.builder()
-                            .type(CategoryType.DESK)
-                            .build()
-            );
-            Product product1 = repo.save(
-                    Product.builder()
-                            .name("bench")
-                            .category(category2)
-                            .description("Just some bench")
-                            .price(400.0)
-                            .deleted(false)
-                            .build()
-            );
-            Product product2 = repo.save(
-                    Product.builder()
-                            .name("book")
-                            .category(category1)
-                            .description("Just some book")
-                            .price(500.0)
-                            .deleted(false)
-                            .build()
-            );
-            Product product3 = repo.save(
-                    Product.builder()
-                            .name("desk")
-                            .category(category4)
-                            .description("Just some desk")
-                            .price(300.0)
-                            .deleted(false)
-                            .build()
-            );
-            Product product4 = repo.save(
-                    Product.builder()
-                            .name("bag")
-                            .category(category3)
-                            .description("Just some bag")
-                            .price(250.0)
-                            .deleted(false)
-                            .build()
-            );
-        };
-    }
+//    @Bean
+//    ApplicationRunner applicationRunner(ProductRepository repo, CategoryRepo categoryRepo) {
+//        return args -> {
+//            Category category1 = categoryRepo.save(
+//                    Category.builder()
+//                            .type(CategoryType.BOOK)
+//                            .build()
+//            );
+//            Category category2 = categoryRepo.save(
+//                    Category.builder()
+//                            .type(CategoryType.BENCH)
+//                            .build()
+//            );
+//            Category category3 = categoryRepo.save(
+//                    Category.builder()
+//                            .type(CategoryType.BAG)
+//                            .build()
+//            );
+//            Category category4 = categoryRepo.save(
+//                    Category.builder()
+//                            .type(CategoryType.DESK)
+//                            .build()
+//            );
+//            Product product1 = repo.save(
+//                    Product.builder()
+//                            .name("bench")
+//                            .category(category2)
+//                            .description("Just some bench")
+//                            .price(400.0)
+//                            .deleted(false)
+//                            .build()
+//            );
+//            Product product2 = repo.save(
+//                    Product.builder()
+//                            .name("book")
+//                            .category(category1)
+//                            .description("Just some book")
+//                            .price(500.0)
+//                            .deleted(false)
+//                            .build()
+//            );
+//            Product product3 = repo.save(
+//                    Product.builder()
+//                            .name("desk")
+//                            .category(category4)
+//                            .description("Just some desk")
+//                            .price(300.0)
+//                            .deleted(false)
+//                            .build()
+//            );
+//            Product product4 = repo.save(
+//                    Product.builder()
+//                            .name("bag")
+//                            .category(category3)
+//                            .description("Just some bag")
+//                            .price(250.0)
+//                            .deleted(false)
+//                            .build()
+//            );
+//        };
+//    }
 
 //            Category category1 = categoryRepo.save(
 //                    Category.builder()

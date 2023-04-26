@@ -71,9 +71,9 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
 //    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> deleteProductById(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteProductById(@PathVariable Long id) {
         service.removeProductById(id);
-        return new ResponseEntity<>("Successfully Delete Product!", HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/all")
@@ -107,7 +107,7 @@ public class ProductController {
     @GetMapping("/records")
     public List<Product> getRecord() {
 
-        return service.findRecords(true);
+        return service.findRecords(false);
     }
 
 }

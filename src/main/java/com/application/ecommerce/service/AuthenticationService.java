@@ -1,5 +1,6 @@
 package com.application.ecommerce.service;
 
+import com.application.ecommerce.dto.AuthenticationResponse;
 import com.application.ecommerce.jwt.JwtToken;
 import com.application.ecommerce.repository.UserRepository;
 import com.application.ecommerce.dto.user.UserLoginDto;
@@ -28,7 +29,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public JwtToken register(UserRegisterDto request) {
+    public AuthenticationResponse register(UserRegisterDto request) {
 
         if (userRepo.existsUserByUsername(request.getUsername()))
             throw new RuntimeException("Username already exists");
@@ -48,10 +49,14 @@ public class AuthenticationService {
         JwtToken jwtToken = jwtTokenUtil.generateToken(user);
         template.opsForValue().set(request.getUsername(), jwtToken.getToken());
 
-        return jwtToken;
+
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .user(user)
+                .build();
     }
 
-    public JwtToken authenticate(UserLoginDto request) {
+    public AuthenticationResponse authenticate(UserLoginDto request) {
         // If user is valid user DaoAthProvider to set the principle to instance of UserDetails else throwing exception
 
         Authentication authentication = authenticationManager.authenticate(
@@ -65,7 +70,10 @@ public class AuthenticationService {
         JwtToken jwtToken = jwtTokenUtil.generateToken(user);
         template.opsForValue().set(request.getUsername(), jwtToken.getToken());
 
-        return jwtToken;
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .user(userRepo.findUserByUsername(user.getUsername()).get())
+                .build();
     }
 
     public void logout() {

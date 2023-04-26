@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 if (    // If one of these above value is null -> continue the filter without doing anything
                         sessionValue != null
-                        && sessionValue.equals(jwt)
+                        && sessionValue.toString().equals(jwt)
                         && userDetails != null
                         && SecurityContextHolder.getContext().getAuthentication() == null)
                 {
@@ -72,9 +72,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {
-        Cookie cookie = WebUtils.getCookie(request, "Token");
-        if (cookie != null)
-            return cookie.getValue();
+//        Cookie cookie = WebUtils.getCookie(request, "Token");
+//        if (cookie != null)
+//            return cookie.getValue();
+//        return null;
+
+        String bearerToken = request.getHeader("Authorization");
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
         return null;
+
     }
 }
