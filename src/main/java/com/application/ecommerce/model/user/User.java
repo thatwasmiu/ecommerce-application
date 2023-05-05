@@ -19,10 +19,7 @@ public class User {
     private Long id;
 
     @Size(max = 15, message = "Me test firstname")
-    private  String firstname;
-
-    @Size(max = 15, message = "Me test lastname")
-    private  String lastname;
+    private  String email;
 
     @Size(min = 1, max = 10)
     private String username;

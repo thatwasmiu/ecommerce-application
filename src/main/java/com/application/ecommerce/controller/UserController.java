@@ -24,6 +24,7 @@ import java.util.List;
 @RequestMapping("api/v1/users")
 @AllArgsConstructor
 @PreAuthorize("hasAuthority('ADMIN')")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     UserService service;
@@ -61,8 +62,6 @@ public class UserController {
     public ResponseEntity<User> updateUserDetails(@PathVariable String username,
                                                   @RequestBody UserUpdateDTO dto) {
         User user = service.getUserByUsername(username);
-        user.setFirstname(dto.getFirstname());
-        user.setLastname(dto.getLastname());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         service.upSertUser(user);
         return ResponseEntity.ok().build();

@@ -18,8 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/categories")
-@PreAuthorize("hasAnyAuthority('ADMIN')")
-
+@CrossOrigin
 public class CategoryController extends CrudRestEndpoint<Category, Long, CategoryCreateDTO> {
 
     public CategoryController(CategoryService service) {

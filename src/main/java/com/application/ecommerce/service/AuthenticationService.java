@@ -38,8 +38,6 @@ public class AuthenticationService {
             role = request.getAdminKey().equals(KEY) ? Role.ADMIN : Role.CUSTOMER;
 
         User user = User.builder()
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
                 .username(request.getUsername())
                 .role(role)
                 .password(passwordEncoder.encode(request.getPassword()))

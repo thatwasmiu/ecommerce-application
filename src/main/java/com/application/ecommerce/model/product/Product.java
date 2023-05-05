@@ -41,6 +41,4 @@ public class Product implements Serializable {
     @NotNull
     private Double price;
 
-    @JsonIgnore
-    private boolean deleted = Boolean.FALSE;
 }
