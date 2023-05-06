@@ -41,7 +41,7 @@ public class WebSecurityConfig {
 
     private static final String[] WHITELIST = {
             "/login", "/register", "/graphiql", "/swagger-ui.html",
-            "/swagger-ui/**", "/v3/api-docs/**"
+            "/swagger-ui/**", "/v3/api-docs/**", "api/v1/orders"
     };
 
 

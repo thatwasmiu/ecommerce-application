@@ -1,6 +1,6 @@
 package com.application.ecommerce.jwt;
 
-import com.application.ecommerce.config.AppUserDetails;
+
 import com.application.ecommerce.model.user.User;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class JwtTokenUtil {
                 .signWith(JwtTokenConfig.getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
         return JwtToken.builder()
-                .token(jwt)
+                .value(jwt)
                 .exprDate(expiredDate.getTime())
                 .build();
     }

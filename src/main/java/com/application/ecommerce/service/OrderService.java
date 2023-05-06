@@ -37,6 +37,7 @@ public class OrderService extends CrudService<Order, Long> {
                         .getAuthentication().getPrincipal();
 
         obj.setOwner(user.getUser());
+
     }
 
     @Override

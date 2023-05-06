@@ -1,5 +1,6 @@
 package com.application.ecommerce.controller;
 
+import com.application.ecommerce.model.product.Product;
 import com.application.ecommerce.service.CategoryService;
 import com.application.ecommerce.base.rest.CrudRestEndpoint;
 import com.application.ecommerce.dto.CategoryCreateDTO;
@@ -9,10 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,11 +24,14 @@ public class CategoryController extends CrudRestEndpoint<Category, Long, Categor
     }
 
     @GetMapping("/list")
-    @PreAuthorize("hasAnyAuthority('CUSTOMER')")
     public ResponseEntity<List<String>> getCategory() {
         return new ResponseEntity<>(((CategoryService) service).getAllName(), HttpStatus.OK);
     }
 
+    @PostMapping("/import")
+    public void importFromJson(@RequestBody List<Category> categories) {
+        ((CategoryService) service).saveAllCategory(categories);
+    }
 
     // Ignore
     @Override
@@ -45,6 +46,7 @@ public class CategoryController extends CrudRestEndpoint<Category, Long, Categor
 
     @Override
     protected Category createObjectFromDTO(CategoryCreateDTO dto) {
-        return dto.createCategory();
+        return null;
     }
+
 }

@@ -2,8 +2,11 @@ package com.application.ecommerce.dto;
 
 import com.application.ecommerce.base.rest.RequestDTO;
 import com.application.ecommerce.model.order.Order;
+import com.application.ecommerce.model.order.OrderStatus;
 import com.application.ecommerce.model.order.ProductPurchase;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -11,21 +14,26 @@ import java.util.List;
 
 @Getter
 @Setter
-public class CartCreateDTO extends RequestDTO {
+@NoArgsConstructor
+@AllArgsConstructor
+public class OrderCreateDTO extends RequestDTO {
 
     private Long customerId;
-
+    private Long voucherId;
     private List<ProductPurchase> products;
+    private Double orderPrice;
 
-    public CartCreateDTO(List<ProductPurchase> products) {
+    public OrderCreateDTO(List<ProductPurchase> products) {
         super();
         this.products = products;
     }
 
-    public static Order createCartFromDTO(CartCreateDTO dto) {
+    public static Order createOrderFromDTO(OrderCreateDTO dto) {
         return Order.builder()
                 .purchaseDate(LocalDate.now())
-                .productPurchases(dto.getProducts())
+                .voucherId(dto.voucherId)
+                .orderPrice(dto.orderPrice)
+                .status(OrderStatus.PENDING)
                 .build();
     }
 }

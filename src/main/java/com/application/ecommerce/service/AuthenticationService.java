@@ -5,7 +5,6 @@ import com.application.ecommerce.jwt.JwtToken;
 import com.application.ecommerce.repository.UserRepository;
 import com.application.ecommerce.dto.user.UserLoginDto;
 import com.application.ecommerce.dto.user.UserRegisterDto;
-import com.application.ecommerce.config.AppUserDetails;
 import com.application.ecommerce.jwt.JwtTokenUtil;
 import com.application.ecommerce.model.user.Role;
 import com.application.ecommerce.model.user.User;
@@ -45,7 +44,7 @@ public class AuthenticationService {
 
         userRepo.save(user);
         JwtToken jwtToken = jwtTokenUtil.generateToken(user);
-        template.opsForValue().set(request.getUsername(), jwtToken.getToken());
+        template.opsForValue().set(request.getUsername(), jwtToken.getValue());
 
 
         return AuthenticationResponse.builder()
@@ -66,7 +65,7 @@ public class AuthenticationService {
 
         UserDetails user = (UserDetails) authentication.getPrincipal();
         JwtToken jwtToken = jwtTokenUtil.generateToken(user);
-        template.opsForValue().set(request.getUsername(), jwtToken.getToken());
+        template.opsForValue().set(request.getUsername(), jwtToken.getValue());
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)

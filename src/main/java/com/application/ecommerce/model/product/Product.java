@@ -28,14 +28,13 @@ public class Product implements Serializable {
 //    @SequenceGenerator(name = "seqGen", sequenceName = "seq", initialValue = 1)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Category category;
-
-    @Size(min = 1, max = 30, message = "The name is in the range of 1 to 30 character")
+    @NotNull
     private String name;
 
-    @Size(max = 1000, message = "The maximum number of character is 1000")
+    private Long categoryId;
+
+    private String imgUrl;
+
     private String description;
 
     @NotNull

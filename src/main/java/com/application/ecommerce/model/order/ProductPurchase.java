@@ -2,8 +2,8 @@ package com.application.ecommerce.model.order;
 
 import com.application.ecommerce.base.rest.AbstractEntity;
 import com.application.ecommerce.model.product.Product;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -11,11 +11,12 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class ProductPurchase extends AbstractEntity {
+public class ProductPurchase {
 
-    @OneToOne
-    private Product product;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
+    private Long id;
+    private Long productId;
     private int quantity;
-    private Double totalPrice;
 }

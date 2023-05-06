@@ -13,7 +13,6 @@ import lombok.*;
 @AllArgsConstructor
 public class Category extends AbstractEntity{
 
-    @Enumerated(value = EnumType.STRING)
-    private CategoryType type;
+    private String type;
 
 }

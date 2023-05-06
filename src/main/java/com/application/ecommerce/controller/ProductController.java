@@ -69,6 +69,11 @@ public class ProductController {
         return ResponseEntity.created(path).build();
     }
 
+    @PostMapping("/import")
+    public void importFromJson(@RequestBody List<Product> products) {
+        service.saveAllProduct(products);
+    }
+
     @DeleteMapping("/{id}")
 //    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Object> deleteProductById(@PathVariable Long id) {
@@ -92,16 +97,6 @@ public class ProductController {
         Node rootNode = new RSQLParser().parse(search);
         Specification<Product> spec = rootNode.accept(new AppRsqlVisitor<>());
         return dao.findAll(spec);
-    }
-
-//    @PostMapping("/excel")
-//    public ResponseEntity<Object> inputExcelFile(MultipartFile multipartFile) {
-//
-//    }
-
-    @GetMapping("/rando")
-    public String getrando() {
-        return "Rando";
     }
 
     @GetMapping("/records")

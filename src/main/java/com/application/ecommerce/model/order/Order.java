@@ -3,6 +3,7 @@ package com.application.ecommerce.model.order;
 import com.application.ecommerce.base.rest.AbstractEntity;
 import com.application.ecommerce.model.user.User;
 import com.application.ecommerce.model.voucher.Voucher;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -20,6 +21,7 @@ import java.util.List;
 public class  Order extends AbstractEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private User owner;
 
     @NotNull
@@ -28,12 +30,8 @@ public class  Order extends AbstractEntity {
     @OneToMany(cascade = CascadeType.ALL)
     private List<ProductPurchase> productPurchases;
 
-    @OneToMany
-    private List<Voucher> vouchers;
-
-    private Double deliveryCost;
-
-    private Double totalPrice;
+    private Long voucherId;
+    private Double orderPrice;
 
     @Column(columnDefinition = "varchar(10) default 'PENDING'")
     @Enumerated(value = EnumType.STRING)

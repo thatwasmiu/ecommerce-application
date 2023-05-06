@@ -41,6 +41,11 @@ public class ProductService {
     }
 
     @CacheEvict(value = "products", allEntries = true)
+    public void saveAllProduct(List<Product> products) {
+        repo.saveAll(products);
+    }
+
+    @CacheEvict(value = "products", allEntries = true)
     public Product upSertProduct(Product product) {
         return repo.save(product);
     }

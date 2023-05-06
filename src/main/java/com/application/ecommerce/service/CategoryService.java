@@ -1,8 +1,10 @@
 package com.application.ecommerce.service;
 
+import com.application.ecommerce.model.product.Product;
 import com.application.ecommerce.repository.CategoryRepo;
 import com.application.ecommerce.base.rest.CrudService;
 import com.application.ecommerce.model.category.Category;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,12 @@ public class CategoryService extends CrudService<Category, Long> {
     public CategoryService(CategoryRepo repo, AuthenticationService authenticationService) {
         super(repo, authenticationService);
     }
+
+
+    public void saveAllCategory(List<Category> categories) {
+        repo.saveAll(categories);
+    }
+
 
     @Override
     protected void doAfterCreate(Category obj) {
