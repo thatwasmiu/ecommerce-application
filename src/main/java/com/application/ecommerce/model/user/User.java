@@ -18,14 +18,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 15, message = "Me test firstname")
     private  String email;
 
-    @Size(min = 1, max = 10)
     private String username;
 
     @JsonIgnore
-    @Size(max = 10000, message = "Me test password")
     private String password;
 
     @Enumerated(EnumType.STRING)

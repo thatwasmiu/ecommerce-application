@@ -15,7 +15,6 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-@CacheConfig(cacheNames={"users"})
 public class UserService implements UserDetailsService{
 
     UserRepository repo;
@@ -32,7 +31,6 @@ public class UserService implements UserDetailsService{
                 .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
     }
 
-    @Cacheable
     public List<User> getAllUser() {
         return repo.findAll();
     }
